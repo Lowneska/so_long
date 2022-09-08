@@ -5,8 +5,8 @@ SRC =	src/main.c \
 		src/moves.c\
 		src/checker.c\
 		src/errors.c\
-		./libft/srcs/get_next_line.c \
-		./libft/srcs/get_next_line_utils.c \
+		./libft/gnl/get_next_line.c \
+		./libft/gnl/get_next_line_utils.c \
 
 SRC_B =	src_bonus/main_bonus.c \
 		src_bonus/parsing_bonus.c\
@@ -18,8 +18,8 @@ SRC_B =	src_bonus/main_bonus.c \
 		src_bonus/animation_bonus.c \
 		src_bonus/simple_errors_bonus.c\
 		src_bonus/utils_bonus.c\
-		./libft/srcs/get_next_line.c \
-		./libft/srcs/get_next_line_utils.c \
+		./libft/gnl/get_next_line.c \
+		./libft/gnl/get_next_line_utils.c \
 
 OBJS_B = objs_bonus/main_bonus.o \
 		objs_bonus/parsing_bonus.o\
@@ -31,8 +31,8 @@ OBJS_B = objs_bonus/main_bonus.o \
 		objs_bonus/animation_bonus.o\
 		objs_bonus/simple_errors_bonus.o\
 		objs_bonus/utils_bonus.o\
-		./libft/srcs/get_next_line.o \
-		./libft/srcs/get_next_line_utils.o \
+		./libft/gnl/get_next_line.o \
+		./libft/gnl/get_next_line_utils.o \
 
 OBJS =	objs/main.o \
 		objs/parsing.o\
@@ -41,20 +41,20 @@ OBJS =	objs/main.o \
 		objs/init_images.o\
 		objs/checker.o\
 		objs/errors.o\
-		./libft/srcs/get_next_line.o \
-		./libft/srcs/get_next_line_utils.o \
+		./libft/gnl/get_next_line.o \
+		./libft/gnl/get_next_line_utils.o \
 
 NAME = so_long
 
 NAME_BONUS = so_long_bonus
 
-CC = gcc
+CC = clang
 
 INC = include/
 
 RM = rm -rf
 
-CFLAGS = -Wall -Werror -Wextra #-g3 -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -g #-g3 -fsanitize=address
 
 MLXFLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 
@@ -75,7 +75,7 @@ objs_bonus/%.o : src_bonus/%.c
 %.o : %.c
 	$(CC) $(CFLAGS) -I${INC} -c $< -o $@
 
-${NAME} : ${OBJS}
+${NAME} : ${OBJS} $(LIB)
 	make -C ./libft
 	make -C ./mlx_linux
 	$(CC) $(CFLAGS) ${OBJS} -D LINUX ${MLXFLAGS} ${LIBFLAGS} -o ${NAME}
@@ -84,6 +84,8 @@ ${NAME_BONUS} : ${OBJS_B}
 	make -C ./libft
 	make -C ./mlx_linux
 	$(CC) $(CFLAGS) ${OBJS_B} -D LINUX ${MLXFLAGS} ${LIBFLAGS} -o ${NAME_BONUS}
+
+
 clean:
 		$(RM) ${OBJS} $(OBJ_B)
 		$(RM) ./objs
@@ -96,4 +98,9 @@ fclean: clean
 		$(RM) ./mlx_linux/libmlx.a
 		$(RM) ./libft/libft.a
 
+malloc_test:	$(OBJS) ./libft/libft.a ./mlx_linux/libmlx_Linux.a
+				$(CC) $(CFLAGS) -fsanitize=undefined -rdynamic -o $@ ${OBJS} $(MLXFLAGS) ./libft/libft.a ./mlx_linux/libmlx_Linux.a -L. -lmallocator
+
 re:	fclean all
+
+#Ajoute re_bonus et .PHONY

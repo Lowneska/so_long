@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 22:38:26 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 15:02:28 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/08 21:18:27 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	init_map(t_map *map)
 	map->i_collected = 0;
 	map->moves = 0;
 	map->other = 0;
+	map->anim = 0;
 }
 
 int	map_checker(char *str, t_map *map)

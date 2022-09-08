@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:25:10 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 05:00:47 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/08 21:56:10 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,21 +83,29 @@ static void	objects(char *str, t_map *map)
 	}
 }
 
+int	jsp(t_map *map, int fd, char **line)
+{
+	*line = get_next_line(fd);
+	if (!*line)
+		return (free(map), 1);
+	map->v_len = up_line_check(*line);
+	free(*line);
+	if (!map->v_len)
+		exit_error_handler("Error on the borders.\n", map);
+	*line = get_next_line(fd);
+	if (!*line)
+		return (free(map), 1);
+	return (0);
+}
+
 int	borders_check(t_map *map, int fd)
 {
 	char	*line;
 	int		status;
 
-	line = get_next_line(fd);
-	if (!line)
-		return (free(map), 1);
-	map->v_len = up_line_check(line);
-	free(line);
-	if (!map->v_len)
-		exit_error_handler("Error on the borders.\n", map);
-	line = get_next_line(fd);
-	if (!line)
-		return (free(map), 1);
+	line = NULL;
+	if (jsp(map, fd, &line))
+		return (1);
 	while (line)
 	{
 		map->h_len += 1;
@@ -114,6 +122,5 @@ int	borders_check(t_map *map, int fd)
 	}
 	if (down_line_check(line) != map->v_len)
 		return (border_error_handler("Error on the borders.\n", line, map));
-	map->h_len += 1;
-	return (free(line), 0);
+	return (map->h_len += 1, free(line), 0);
 }

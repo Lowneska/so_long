@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 22:42:38 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 15:21:56 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/08 21:30:33 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,21 @@
 int	main(int argc, char **argv)
 {
 	t_map	*map;
+	char	**tab;
 
 	map = malloc(sizeof(t_map));
 	init_map(map);
 	if (argc != 2)
-		simple_error_handler("Invalid number of arguments.\n", map);
+		return (ft_putstr_fd("Invalid number of arguments.\n", 2), 1);
 	if (map_checker(argv[1], map))
 		exit(1);
 	map->tab = create_map(argv[1], map);
+	tab = create_map(argv[1], map);
+	check_path(tab, map->pos_y, map->pos_x);
+	if (!check_path_map(tab, map))
+		return (free_map(map, map->tab), free(map),
+			ft_putstr_fd("Pas de chemin possible !\n", 2), 1);
+	free_map(map, tab);
 	if (image_init(map))
 		exit (1);
 	mlx_loop_hook(map->image->mlx, animation, map);
@@ -31,8 +38,5 @@ int	main(int argc, char **argv)
 	mlx_hook(map->image->mlx_win, KeyPress, KeyPressMask, player_moves, map);
 	mlx_loop(map->image->mlx);
 	destroy_images(map->image, map, "", 23);
-	free_map(map, map->tab);
-	free(map->image);
-	free(map);
-	return (0);
+	return (free_map(map, map->tab), free(map->image), free(map), 0);
 }

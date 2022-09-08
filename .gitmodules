@@ -1,0 +1,3 @@
+[submodule "ft_mallocator"]
+	path = ft_mallocator
+	url = https://github.com/tmatis/ft_mallocator.git

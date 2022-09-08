@@ -6,11 +6,18 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 19:42:26 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 14:55:12 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/08 23:41:07 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
+#include <stdio.h>
+void	print(char *str, int i)
+{
+	ft_putstr_fd(str, 2);
+	ft_putnbr_fd(i, 2);
+	ft_putchar_fd('\n', 2);
+}
 
 int	cross(t_map *map)
 {
@@ -25,13 +32,19 @@ int	main(int argc, char **argv)
 	char	**tab;
 
 	map = malloc(sizeof(t_map));
+	if (!map)
+		return (1);
 	init_map(map);
 	if (argc != 2)
-		simple_error_handler("Invalid number of arguments.\n", map);
+		return (ft_putstr_fd("Invalid number of arguments.\n", 2), 1);
 	if (map_checker(argv[1], map))
 		exit(1);
 	map->tab = create_map(argv[1], map);
+	if (!map->tab)
+		return (1);
 	tab = create_map(argv[1], map);
+	if (!tab)
+		return (1);
 	check_path(tab, map->pos_y, map->pos_x);
 	if (!check_path_map(tab, map))
 	{	
@@ -45,8 +58,5 @@ int	main(int argc, char **argv)
 	mlx_hook(map->image->mlx_win, KeyPress, KeyPressMask, player_moves, map);
 	mlx_loop(map->image->mlx);
 	destroy_images(map->image, map, "", 13);
-	free_map(map, map->tab);
-	free(map->image);
-	free(map);
-	return (0);
+	return (free_map(map, map->tab), free(map->image), free(map), 0);
 }

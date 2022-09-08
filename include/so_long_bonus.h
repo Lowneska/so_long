@@ -6,21 +6,20 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 16:24:32 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 15:21:08 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/08 21:17:54 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_BONUS_H
 # define SO_LONG_BONUS_H
 
-# include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-# include "../libft/includes/libft.h"
-# include "../libft/includes/get_next_line.h"
+# include "../libft/libft.h"
+# include "../libft/gnl/get_next_line.h"
 # include "../mlx_linux/mlx.h"
 # include "/usr/include/X11/X.h"
 

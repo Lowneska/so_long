@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 18:02:00 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 04:38:58 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/08 23:47:10 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,22 @@ char	**create_map(char *str, t_map *map)
 
 	i = 1;
 	tab = malloc(sizeof (char *) * map->h_len);
+	if (!tab)
+		return (NULL);
 	fd = open(str, O_RDONLY);
 	if (!fd)
 		exit_error_handler("Error when opening the file.\n", map);
 	line = get_next_line(fd);
 	tab[0] = ft_strdup(line);
+	if (!tab[0])
+		return (NULL);
 	free(line);
 	line = get_next_line(fd);
 	while (line)
 	{
 		tab[i] = ft_strdup(line);
+		if (!tab[i])
+			break;
 		free(line);
 		line = get_next_line(fd);
 		i++;
@@ -88,6 +94,34 @@ char	**create_map(char *str, t_map *map)
 }
 
 int	check_path_map(char **tab, t_map *map)
+{
+	int	i;
+	int	j;
+	int	e;
+	int	s;
+
+	i = -1;
+	e = 0;
+	s = 0;
+	while (++i < (map->v_len))
+	{
+		j = -1;
+		while (++j < (map->h_len))
+		{
+			if (tab[j][i] == 'I')
+				return (0);
+			else if (tab[j][i] == 'E')
+				e++;
+			else if (tab[j][i] == 'S')
+				s++;
+		}
+	}
+	if (e)
+		return (s);
+	return (1);
+}
+
+/*int	check_path_map(char **tab, t_map *map)
 {
 	int	i;
 	int	j;
@@ -103,4 +137,4 @@ int	check_path_map(char **tab, t_map *map)
 		}
 	}
 	return (1);
-}
+}*/

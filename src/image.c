@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:30:06 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 05:15:31 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/08 23:38:10 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	put_walls(int j, int i, t_map *map)
 {
-	if ((j == 0))
+	if (j == 0)
 		mlx_put_image_to_window(map->image->mlx, map->image->mlx_win,
 			map->image->wall_up, i * 64, j * 64);
 	else if ((i != 0) && (i != (map->v_len - 1)) && (j == (map->h_len - 1)))
