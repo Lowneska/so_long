@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 21:54:57 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 05:01:54 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/08 15:03:40 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static int	middle_line_check(char *line, t_map *map)
 {
 	int	length;
 
-	length = 0;
 	length = ft_strlen(line) - 1;
 	if ((length == map->v_len) && (line[0] == '1') && (line[length - 1] == '1')
 		&& (line[length] == '\n'))
@@ -95,7 +94,7 @@ int	borders_check(t_map *map, int fd)
 	map->v_len = up_line_check(line);
 	free(line);
 	if (!map->v_len)
-		exit_error("Error on the borders.\n", map);
+		exit_error_handler("Error on the borders.\n", map);
 	line = get_next_line(fd);
 	if (!line)
 		return (free(map), 1);

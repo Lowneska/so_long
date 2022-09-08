@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 22:27:33 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 05:36:11 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/08 14:48:52 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,6 @@ int	player_stat(int keycode, t_map *map)
 int	cross(t_map *map)
 {
 	destroy_images(map->image, map, "", 23);
-	free(map->image);
-	map->image->mlx = NULL;
-	free_map(map);
-	free(map);
 	exit(0);
 	return (0);
 }

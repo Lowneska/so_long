@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 22:38:26 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 04:59:07 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/08 15:02:28 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	extension_check(char *str, t_map *map)
 	int	i;
 
 	i = ft_strlen(str) - 4;
-	if (ft_strncmp(str + i, ".ber", 4) || (ft_strlen(str) <= 4))
+	if (ft_strncmp(str + i, ".ber", 4) || (!ft_strncmp(str + i, "/.ber", 5)))
 		return (simple_error_handler("Invalid file extension.\n", map));
 	else
 		return (0);
@@ -32,7 +32,6 @@ void	init_map(t_map *map)
 	map->v_len = 0;
 	map->i_collected = 0;
 	map->moves = 0;
-	map->anim = 0;
 	map->other = 0;
 }
 
@@ -46,11 +45,11 @@ int	map_checker(char *str, t_map *map)
 	if (!fd)
 		return (simple_error_handler("Error when opening the file.\n", map));
 	if (extension_check(str, map))
-		return (1);
+		return (close(fd), 1);
 	if (borders_check(map, fd))
-		return (1);
+		return (close(fd), 1);
 	if (map->v_len < 3 || map->h_len < 3)
-		return (simple_error_handler("Error on the borders.\n", map));
+		return (simple_error_handler("Not rectangular.\n", map));
 	if (map->p_num != 1)
 		return (simple_error_handler("Invalid number of players.\n", map));
 	if (map->other > 0)
@@ -70,10 +69,10 @@ char	**create_map(char *str, t_map *map)
 	int		i;
 
 	i = 1;
-	tab = malloc(sizeof(char *) * map->h_len);
+	tab = malloc(sizeof (char *) * map->h_len);
 	fd = open(str, O_RDONLY);
 	if (!fd)
-		exit_error("Error when opening the file.\n", map);
+		exit_error_handler("Error when opening the file.\n", map);
 	line = get_next_line(fd);
 	tab[0] = ft_strdup(line);
 	free(line);

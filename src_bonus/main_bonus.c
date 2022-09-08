@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 22:42:38 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 05:34:37 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/08 15:21:56 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,8 @@ int	main(int argc, char **argv)
 	mlx_hook(map->image->mlx_win, KeyPress, KeyPressMask, player_moves, map);
 	mlx_loop(map->image->mlx);
 	destroy_images(map->image, map, "", 23);
+	free_map(map, map->tab);
+	free(map->image);
+	free(map);
 	return (0);
 }
