@@ -1,100 +1,106 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/07 18:02:00 by skhali            #+#    #+#             */
+/*   Updated: 2022/09/08 04:38:58 by skhali           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/so_long.h"
 
-static int    extension_check(char *str, t_map *map)
+static int	extension_check(char *str, t_map *map)
 {
-    int i;
-    i = ft_strlen(str) - 4;
-    if (ft_strncmp(str + i, ".ber", 4))
-        return (simple_error_handler("Invalid file extension.\n", map));
-    else
-        return (0);
+	int	i;
+
+	i = ft_strlen(str) - 4;
+	if (ft_strncmp(str + i, ".ber", 4) || (!ft_strncmp(str + i, "/.ber", 5)))
+		return (simple_error_handler("Invalid file extension.\n", map));
+	else
+		return (0);
 }
 
-void    init_map(t_map *map)
+void	init_map(t_map *map)
 {
-    map->e_num = 0;
-    map->i_num = 0;
-    map->p_num = 0;
-    map->h_len = 0;
-    map->v_len = 0;
-    map->i_collected = 0;
-    map->moves = 0;
-}
-int map_checker(char *str, t_map *map)
-{
-    int fd;
-
-    if (access(str, F_OK))
-        return (simple_error_handler("File do not exist.\n", map));
-    fd = open(str, O_RDONLY);
-    if (!fd)
-        return (simple_error_handler("Error when opening the file.\n", map));
-    if (extension_check(str, map))
-        return (1);
-    if (borders_check(map, fd))
-        return (1);
-    if (map->v_len < 3 || map->h_len < 3)
-        return (simple_error_handler("Error on the borders.\n", map));
-    if (map->p_num != 1)
-        return (simple_error_handler("Invalid number of players.\n", map));
-    if (map->i_num < 1)
-        return (simple_error_handler("No items.\n", map));
-    if (map->e_num < 1)
-        return (simple_error_handler("No exit.\n", map));
-    return (0);
+	map->e_num = 0;
+	map->i_num = 0;
+	map->p_num = 0;
+	map->h_len = 0;
+	map->v_len = 0;
+	map->i_collected = 0;
+	map->moves = 0;
+	map->other = 0;
 }
 
-int check_path(char **tab, int i, int j)
+int	map_checker(char *str, t_map *map)
 {
-    if ((tab[i][j + 1] != '1' && tab[i][j + 1] != 'X') && (tab[i][j - 1] != '1' 
-        && tab[i][j - 1] != 'X') && (tab[i + 1][j] != '1' && tab[i + 1][j] != 'X') 
-        && (tab[i - 1][j] != '1' && tab[i - 1][j] != 'X'))
-        return (0);
-    if (tab[i + 1][j] && tab[i + 1][j] != '1' && tab[i + 1][j] != 'X')
-    {
-        tab[i + 1][j] = 'X';
-         check_path(tab, i + 1, j);
-    }
-    if (tab[i - 1][j] != '1' && tab[i - 1][j] != 'X')
-    {
-        tab[i - 1][j] = 'X';
-         check_path(tab, i - 1, j);
-    }
-    if (tab[i][j + 1] != '1' && tab[i][j + 1] != 'X')
-    {
-        tab[i][j + 1] = 'X';
-         check_path(tab, i, j + 1);
-    }
-    if (tab[i][j - 1] && tab[i][j - 1] != '1' && tab[i][j - 1] != 'X')
-    {
-        tab[i][j - 1] = 'X';
-        check_path(tab, i, j - 1);
-    }
-    return 0;
-}  
+	int	fd;
 
-char **create_map(char *str, t_map *map)
+	if (access(str, F_OK))
+		return (simple_error_handler("File do not exist.\n", map));
+	fd = open(str, O_RDONLY);
+	if (!fd)
+		return (simple_error_handler("Error when opening the file.\n", map));
+	if (extension_check(str, map))
+		return (close(fd), 1);
+	if (borders_check(map, fd))
+		return (close(fd), 1);
+	if (map->v_len < 3 || map->h_len < 3)
+		return (simple_error_handler("Not rectangular.\n", map));
+	if (map->p_num != 1)
+		return (simple_error_handler("Invalid number of players.\n", map));
+	if (map->other > 0)
+		return (simple_error_handler("Invalid object on map.\n", map));
+	if (map->i_num < 1)
+		return (simple_error_handler("No items.\n", map));
+	if (map->e_num < 1)
+		return (simple_error_handler("No exit.\n", map));
+	return (0);
+}
+
+char	**create_map(char *str, t_map *map)
 {
-    int fd;
-    char *line;
-    char **tab;
-    int i;
+	int		fd;
+	char	*line;
+	char	**tab;
+	int		i;
 
-    i = 1;
-    tab = malloc(sizeof(char*)*map->h_len);
-    fd = open(str, O_RDONLY);
-    if (!fd)
-        exit_error_handler("Error when opening the file.\n", map);
-    line = get_next_line(fd);
-    tab[0] = ft_strdup(line);
-    free(line);
-    line = get_next_line(fd);
-    while (line)
-    {
-        tab[i] = ft_strdup(line);
-        free(line);
-        line = get_next_line(fd);
-        i++;
-    }
-    return (tab);
+	i = 1;
+	tab = malloc(sizeof (char *) * map->h_len);
+	fd = open(str, O_RDONLY);
+	if (!fd)
+		exit_error_handler("Error when opening the file.\n", map);
+	line = get_next_line(fd);
+	tab[0] = ft_strdup(line);
+	free(line);
+	line = get_next_line(fd);
+	while (line)
+	{
+		tab[i] = ft_strdup(line);
+		free(line);
+		line = get_next_line(fd);
+		i++;
+	}
+	return (tab);
+}
+
+int	check_path_map(char **tab, t_map *map)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < (map->v_len))
+	{
+		j = -1;
+		while (++j < (map->h_len))
+		{
+			if ((tab[j][i] == 'I') || (tab[j][i] == 'E'))
+				return (0);
+		}
+	}
+	return (1);
 }

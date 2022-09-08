@@ -22,5 +22,5 @@ int	print_player_down(t_map *map)
 	if (i == (SPEED * 8))
 		i = 0;
 	i++;
-	return 0;
+	return (0);
 }
