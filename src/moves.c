@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:02:10 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 22:59:08 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/09 18:33:47 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,42 +73,34 @@ int	player_moves(int keycode, t_map *map)
 
 static int	check(char **tab, int i, int j)
 {
-	return ((tab[i][j + 1] != '1' && tab[i][j + 1] != 'X' && tab[i][j + 1] != 'S') &&
-	(tab[i][j - 1] != '1' && tab[i][j - 1] != 'X' && tab[i][j - 1] != 'S') && (tab[i + 1][j] != '1'
-				&& tab[i + 1][j] != 'X' && tab[i + 1][j] != 'S') && (tab[i - 1][j] != '1'
-					&& tab[i - 1][j] != 'X' && tab[i - 1][j] != 'S'));
-}
-
-void	test(char **tab, int i, int j)
-{
-	if (tab[i][j] != 'E')
-		tab[i][j] = 'X';
-	else
-		tab[i][j] = 'S';
+	return ((tab[i][j + 1] != '1' && tab[i][j + 1] != 'X') &&
+	(tab[i][j - 1] != '1' && tab[i][j - 1] != 'X') && (tab[i + 1][j] != '1'
+				&& tab[i + 1][j] != 'X') && (tab[i - 1][j] != '1'
+					&& tab[i - 1][j] != 'X'));
 }
 
 int	check_path(char **tab, int i, int j)
 {
 	if (check(tab, i, j))
 		return (0);
-	if (tab[i + 1][j] && tab[i + 1][j] != '1' && tab[i + 1][j] != 'X' && tab[i + 1][j] != 'S')
-	{	
-		test(tab, i + 1, j);
+	if (tab[i + 1][j] && tab[i + 1][j] != '1' && tab[i + 1][j] != 'X')
+	{
+		tab[i + 1][j] = 'X';
 		check_path(tab, i + 1, j);
 	}
-	if (tab[i - 1][j] != '1' && tab[i - 1][j] != 'X' && tab[i - 1][j] != 'S')
+	if (tab[i - 1][j] != '1' && tab[i - 1][j] != 'X')
 	{
-		test(tab, i - 1, j);
+		tab[i - 1][j] = 'X';
 		check_path(tab, i - 1, j);
 	}
-	if (tab[i][j + 1] != '1' && tab[i][j + 1] != 'X' && tab[i][j + 1] != 'S')
+	if (tab[i][j + 1] != '1' && tab[i][j + 1] != 'X')
 	{
-		test(tab, i, j + 1);
+		tab[i][j + 1] = 'X';
 		check_path(tab, i, j + 1);
 	}
-	if (tab[i][j - 1] && tab[i][j - 1] != '1' && tab[i][j - 1] != 'X' && tab[i][j - 1] != 'S')
+	if (tab[i][j - 1] && tab[i][j - 1] != '1' && tab[i][j - 1] != 'X')
 	{
-		test(tab, i, j - 1);
+		tab[i][j - 1] = 'X';
 		check_path(tab, i, j - 1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 19:42:26 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 23:41:07 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/09 17:11:03 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,8 @@ int	main(int argc, char **argv)
 		return (1);
 	check_path(tab, map->pos_y, map->pos_x);
 	if (!check_path_map(tab, map))
-	{	
-		free_map(map, tab);
-		exit_error_handler("Pas de chemin possible !\n", map);
-	}
+		return (free_map(map, map->tab), free(map),
+			ft_putstr_fd("Pas de chemin possible !\n", 2), 1);
 	free_map(map, tab);
 	if (image_init(map))
 		exit (1);

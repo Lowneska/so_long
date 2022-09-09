@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:54:21 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 23:33:36 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/09 17:01:51 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,6 @@
 static void	destroy_images_p1(t_image *image, int i)
 {
 	(void)i;
-	// if (i > 11)
-	// 	mlx_destroy_image(image->mlx, image->wall_aright);
-	// if (i > 10)
-	// 	mlx_destroy_image(image->mlx, image->wall_bright);
-	// if (i > 9)
-	// 	mlx_destroy_image(image->mlx, image->exit);
-	// if (i > 8)
-	// 	mlx_destroy_image(image->mlx, image->item);
-	// if (i > 7)
-	// 	mlx_destroy_image(image->mlx, image->wall_right);
-	// if (i > 6)
-	// 	mlx_destroy_image(image->mlx, image->wall_left);
-	// if (i > 5)
-	// 	mlx_destroy_image(image->mlx, image->wall_up);
-	// if (i > 4)
-	// 	mlx_destroy_image(image->mlx, image->wall_down);
-	// if (i > 3)
-	// 	mlx_destroy_image(image->mlx, image->player);
-	// if (i > 2)
-	// 	mlx_destroy_image(image->mlx, image->ground);
-	// if (i > 1)
-	// 	mlx_destroy_image(image->mlx, image->wall);
 	if (image->mlx)
 	{
 		if (image->wall_aright)
@@ -66,16 +44,11 @@ static void	destroy_images_p1(t_image *image, int i)
 
 void	destroy_images(t_image *image, t_map *map, char *str, int i)
 {
-	if (map)
-		exit_error_handler_map(str, map);
-	if (image->mlx)
-	{
-		mlx_destroy_window(image->mlx, image->mlx_win);
-		destroy_images_p1(image, i);
-		mlx_destroy_display(image->mlx);
-		free(image->mlx);
-		exit(0);
-	}
+	destroy_images_p1(image, i);
+	mlx_destroy_window(image->mlx, image->mlx_win);
+	mlx_destroy_display(image->mlx);
+	free(image->mlx);
+	exit_error_handler_map(str, map);
 }
 
 static void	load_exit_item(t_image *image, t_map *map, int width, int height)
@@ -137,6 +110,6 @@ void	load_images(t_image *image, t_map *map)
 
 	height = 0;
 	width = 0;
-	load_exit_item(image, map, width, height);
 	load_base(image, map, width, height);
+	load_exit_item(image, map, width, height);
 }

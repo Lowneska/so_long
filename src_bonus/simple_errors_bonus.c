@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 22:40:54 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 21:29:29 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/09 18:12:27 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@ void	free_map(t_map *map, char **tab)
 		free(tab[i++]);
 	free(tab);
 }
+
+void simple_exit_error_handler(char *str, t_map *map)
+{
+	free(map);
+	ft_putstr_fd(str, 2);
+	exit(1);
+} 
 
 int	simple_error_handler(char *str, t_map *map)
 {

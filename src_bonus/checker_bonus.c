@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 21:54:57 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 15:03:40 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/09 17:52:58 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,21 +83,33 @@ static void	objects(char *str, t_map *map)
 	}
 }
 
+int	borders_check_bis(t_map *map, int fd, char **line)
+{
+	*line = get_next_line(fd);
+	if (!*line)
+		return (free(map), 1);
+	map->v_len = up_line_check(*line);
+	free(*line);
+	if (!map->v_len)
+	{
+		free(map);
+		ft_putstr_fd("Error on the borders.\n", 2);
+		exit (1);
+	}
+	*line = get_next_line(fd);
+	if (!*line)
+		return (free(map), 1);
+	return (0);
+}
+
 int	borders_check(t_map *map, int fd)
 {
 	char	*line;
 	int		status;
 
-	line = get_next_line(fd);
-	if (!line)
-		return (free(map), 1);
-	map->v_len = up_line_check(line);
-	free(line);
-	if (!map->v_len)
-		exit_error_handler("Error on the borders.\n", map);
-	line = get_next_line(fd);
-	if (!line)
-		return (free(map), 1);
+	line = NULL;
+	if (borders_check_bis(map, fd, &line))
+		return (1);
 	while (line)
 	{
 		map->h_len += 1;
@@ -114,6 +126,5 @@ int	borders_check(t_map *map, int fd)
 	}
 	if (down_line_check(line) != map->v_len)
 		return (border_error_handler("Error on the borders.\n", line, map));
-	map->h_len += 1;
-	return (free(line), 0);
+	return (map->h_len += 1, free(line), 0);
 }

@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 22:38:26 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 21:18:27 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/09 18:29:27 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,24 +57,46 @@ int	map_checker(char *str, t_map *map)
 		return (simple_error_handler("Invalid object on map.\n", map));
 	if (map->i_num < 1)
 		return (simple_error_handler("No items.\n", map));
-	if (map->e_num < 1)
+	if (map->e_num != 1)
 		return (simple_error_handler("No exit.\n", map));
 	return (0);
 }
 
+void	free_map_p2(char **tab, int j)
+{
+	int	i;
+
+	i = 0;
+	while (i <= j)
+		free(tab[i++]);
+	free(tab);
+}
+char **create_map_p2(int *fd, char *str, t_map *map, char **line)
+{
+	char	**tab;
+	
+	tab = malloc(sizeof (char *) * map->h_len);
+	if (!tab)
+		simple_exit_error_handler("Malloc error.\n", map);
+	*fd = open(str, O_RDONLY);
+	if (*fd < 0)
+	{
+		free(tab);
+		simple_exit_error_handler("Error while opening the file.\n", map);
+	}
+	*line = get_next_line(*fd);
+	return (tab);
+}
+
 char	**create_map(char *str, t_map *map)
 {
+	char	**tab;
 	int		fd;
 	char	*line;
-	char	**tab;
 	int		i;
 
 	i = 1;
-	tab = malloc(sizeof (char *) * map->h_len);
-	fd = open(str, O_RDONLY);
-	if (!fd)
-		exit_error_handler("Error when opening the file.\n", map);
-	line = get_next_line(fd);
+	tab = create_map_p2(&fd, str, map, &line);
 	tab[0] = ft_strdup(line);
 	free(line);
 	line = get_next_line(fd);
@@ -82,6 +104,11 @@ char	**create_map(char *str, t_map *map)
 	{
 		tab[i] = ft_strdup(line);
 		free(line);
+		if (!tab[i])
+		{
+			free_map_p2(tab, i);
+			simple_exit_error_handler("Malloc error.\n", map);
+		}
 		line = get_next_line(fd);
 		i++;
 	}
