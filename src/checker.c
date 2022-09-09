@@ -6,13 +6,13 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:25:10 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/09 17:33:11 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/09 20:39:09 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 
-static int	middle_line_check(char *line, t_map *map)
+int	middle_line_check(char *line, t_map *map)
 {
 	int	length;
 
@@ -27,7 +27,7 @@ static int	middle_line_check(char *line, t_map *map)
 		return (0);
 }
 
-static int	up_line_check(char *line)
+int	up_line_check(char *line)
 {
 	int	i;
 
@@ -43,7 +43,7 @@ static int	up_line_check(char *line)
 	return (i);
 }
 
-static int	down_line_check(char *line)
+int	down_line_check(char *line)
 {
 	int	i;
 
@@ -59,7 +59,7 @@ static int	down_line_check(char *line)
 	return (i);
 }
 
-static void	objects(char *str, t_map *map)
+void	objects(char *str, t_map *map)
 {
 	int	i;
 
@@ -100,31 +100,4 @@ int	borders_check_bis(t_map *map, int fd, char **line)
 	if (!*line)
 		return (free(map), 1);
 	return (0);
-}
-
-int	borders_check(t_map *map, int fd)
-{
-	char	*line;
-	int		status;
-
-	line = NULL;
-	if (borders_check_bis(map, fd, &line))
-		return (1);
-	while (line)
-	{
-		map->h_len += 1;
-		status = middle_line_check(line, map);
-		if (!status)
-			return (border_error_handler("Error.\n", line, map));
-		objects(line, map);
-		if (status == 1)
-			break ;
-		free(line);
-		line = get_next_line(fd);
-		if (!line)
-			return (free(map), 1);
-	}
-	if (down_line_check(line) != map->v_len)
-		return (border_error_handler("Error on the borders.\n", line, map));
-	return (map->h_len += 1, free(line), 0);
 }

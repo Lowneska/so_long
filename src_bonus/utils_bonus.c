@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 22:27:33 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 14:48:52 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/09 20:46:32 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,19 @@ int	check_path(char **tab, int i, int j)
 		check_path(tab, i, j - 1);
 	}
 	return (0);
+}
+
+int	middle_line_check(char *line, t_map *map)
+{
+	int	length;
+
+	length = ft_strlen(line) - 1;
+	if ((length == map->v_len) && (line[0] == '1') && (line[length - 1] == '1')
+		&& (line[length] == '\n'))
+		return (2);
+	else if ((length == map->v_len - 1) && (line[0] == '1')
+		&& (line[length] == '1'))
+		return (1);
+	else
+		return (0);
 }

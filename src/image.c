@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:30:06 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/08 23:38:10 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/09 20:36:55 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,40 @@ int	image_init(t_map *map)
 	load_images(image, map);
 	put_images(image, map);
 	return (0);
+}
+
+int	border_error_handler(char *str, char *line, t_map *map)
+{
+	free(map);
+	free(line);
+	line = NULL;
+	ft_putstr_fd(str, 2);
+	return (1);
+}
+
+int	borders_check(t_map *map, int fd)
+{
+	char	*line;
+	int		status;
+
+	line = NULL;
+	if (borders_check_bis(map, fd, &line))
+		return (1);
+	while (line)
+	{
+		map->h_len += 1;
+		status = middle_line_check(line, map);
+		if (!status)
+			return (border_error_handler("Error.\n", line, map));
+		objects(line, map);
+		if (status == 1)
+			break ;
+		free(line);
+		line = get_next_line(fd);
+		if (!line)
+			return (free(map), 1);
+	}
+	if (down_line_check(line) != map->v_len)
+		return (border_error_handler("Error on the borders.\n", line, map));
+	return (map->h_len += 1, free(line), 0);
 }

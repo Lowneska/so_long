@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 18:02:00 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/09 18:46:29 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/09 20:44:30 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,10 @@ int	map_checker(char *str, t_map *map)
 	if (map->i_num < 1)
 		return (simple_error_handler("No items.\n", map));
 	if (map->e_num != 1)
-		return (simple_error_handler("No exit.\n", map));
+		return (simple_error_handler("Invalid number of exits.\n", map));
 	return (0);
 }
+
 void	free_map_p2(char **tab, int j)
 {
 	int	i;
@@ -69,10 +70,11 @@ void	free_map_p2(char **tab, int j)
 		free(tab[i++]);
 	free(tab);
 }
-char **create_map_p2(int *fd, char *str, t_map *map, char **line)
+
+char	**create_map_p2(int *fd, char *str, t_map *map, char **line)
 {
 	char	**tab;
-	
+
 	tab = malloc(sizeof (char *) * map->h_len);
 	if (!tab)
 		simple_exit_error_handler("Malloc error.\n", map);
@@ -84,49 +86,4 @@ char **create_map_p2(int *fd, char *str, t_map *map, char **line)
 	}
 	*line = get_next_line(*fd);
 	return (tab);
-}
-
-char	**create_map(char *str, t_map *map)
-{
-	char	**tab;
-	int		fd;
-	char	*line;
-	int		i;
-
-	i = 1;
-	tab = create_map_p2(&fd, str, map, &line);
-	tab[0] = ft_strdup(line);
-	free(line);
-	line = get_next_line(fd);
-	while (line)
-	{
-		tab[i] = ft_strdup(line);
-		free(line);
-		if (!tab[i])
-		{
-			free_map_p2(tab, i);
-			simple_exit_error_handler("Malloc error.\n", map);
-		}
-		line = get_next_line(fd);
-		i++;
-	}
-	return (tab);
-}
-
-int	check_path_map(char **tab, t_map *map)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	while (++i < (map->v_len))
-	{
-		j = -1;
-		while (++j < (map->h_len))
-		{
-			if ((tab[j][i] == 'I') || (tab[j][i] == 'E'))
-				return (0);
-		}
-	}
-	return (1);
 }

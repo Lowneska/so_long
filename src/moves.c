@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:02:10 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/09 18:33:47 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/09 20:33:49 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	player_moves(int keycode, t_map *map)
 			status = case_action(map->pos_y, map->pos_x + 1, map);
 	if (keycode == ESC || status == 2)
 	{
-		destroy_images(map->image, map, "", 12);
+		destroy_images(map->image, map, "");
 		exit(0);
 	}
 	if (status != 0)

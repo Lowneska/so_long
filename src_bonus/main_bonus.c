@@ -6,11 +6,43 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 22:42:38 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/09 18:48:01 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/09 20:51:27 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long_bonus.h"
+
+int	border_error_handler(char *str, char *line, t_map *map)
+{
+	free(map);
+	free(line);
+	line = NULL;
+	ft_putstr_fd(str, 2);
+	return (1);
+}
+
+void	free_map_p2(char **tab, int j)
+{
+	int	i;
+
+	i = 0;
+	while (i <= j)
+		free(tab[i++]);
+	free(tab);
+}
+
+void	init_map(t_map *map)
+{
+	map->e_num = 0;
+	map->i_num = 0;
+	map->p_num = 0;
+	map->h_len = 0;
+	map->v_len = 0;
+	map->i_collected = 0;
+	map->moves = 0;
+	map->other = 0;
+	map->anim = 0;
+}
 
 int	main(int argc, char **argv)
 {

@@ -6,26 +6,11 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 21:54:57 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/09 17:52:58 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/09 20:47:11 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long_bonus.h"
-
-static int	middle_line_check(char *line, t_map *map)
-{
-	int	length;
-
-	length = ft_strlen(line) - 1;
-	if ((length == map->v_len) && (line[0] == '1') && (line[length - 1] == '1')
-		&& (line[length] == '\n'))
-		return (2);
-	else if ((length == map->v_len - 1) && (line[0] == '1')
-		&& (line[length] == '1'))
-		return (1);
-	else
-		return (0);
-}
 
 static int	up_line_check(char *line)
 {

@@ -6,15 +6,14 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:54:21 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/09 17:01:51 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/09 20:33:25 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 
-static void	destroy_images_p1(t_image *image, int i)
+static void	destroy_images_p1(t_image *image)
 {
-	(void)i;
 	if (image->mlx)
 	{
 		if (image->wall_aright)
@@ -42,9 +41,9 @@ static void	destroy_images_p1(t_image *image, int i)
 	}
 }
 
-void	destroy_images(t_image *image, t_map *map, char *str, int i)
+void	destroy_images(t_image *image, t_map *map, char *str)
 {
-	destroy_images_p1(image, i);
+	destroy_images_p1(image);
 	mlx_destroy_window(image->mlx, image->mlx_win);
 	mlx_destroy_display(image->mlx);
 	free(image->mlx);
@@ -56,27 +55,27 @@ static void	load_exit_item(t_image *image, t_map *map, int width, int height)
 	image->wall_left = mlx_xpm_file_to_image(image->mlx,
 			"sprites/wall_left.xpm", &width, &height);
 	if (!image->wall_left)
-		destroy_images(image, map, "Mauvais chargement des images.\n", 6);
+		destroy_images(image, map, "Mauvais chargement des images.\n");
 	image->wall_right = mlx_xpm_file_to_image(image->mlx,
 			"sprites/wall_right.xpm", &width, &height);
 	if (!image->wall_right)
-		destroy_images(image, map, "Mauvais chargement des images.\n", 7);
+		destroy_images(image, map, "Mauvais chargement des images.\n");
 	image->item = mlx_xpm_file_to_image(image->mlx, "sprites/flower.xpm",
 			&width, &height);
 	if (!image->item)
-		destroy_images(image, map, "Mauvais chargement des images.\n", 8);
+		destroy_images(image, map, "Mauvais chargement des images.\n");
 	image->exit = mlx_xpm_file_to_image(image->mlx, "sprites/exit.xpm",
 			&width, &height);
 	if (!image->exit)
-		destroy_images(image, map, "Mauvais chargement des images.\n", 9);
+		destroy_images(image, map, "Mauvais chargement des images.\n");
 	image->wall_bright = mlx_xpm_file_to_image(image->mlx,
 			"sprites/wall_b_down_right.xpm", &width, &height);
 	if (!image->wall_bright)
-		destroy_images(image, map, "Mauvais chargement des images.\n", 10);
+		destroy_images(image, map, "Mauvais chargement des images.\n");
 	image->wall_aright = mlx_xpm_file_to_image(image->mlx,
 			"sprites/wall_b_down_leftt.xpm", &width, &height);
 	if (!image->wall_aright)
-		destroy_images(image, map, "Mauvais chargement des images.\n", 11);
+		destroy_images(image, map, "Mauvais chargement des images.\n");
 }
 
 static void	load_base(t_image *image, t_map *map, int width, int height)
@@ -84,23 +83,23 @@ static void	load_base(t_image *image, t_map *map, int width, int height)
 	image->wall = mlx_xpm_file_to_image(image->mlx, "sprites/wall.xpm",
 			&width, &height);
 	if (!image->wall)
-		destroy_images(image, map, "Mauvais chargement des images.\n", 1);
+		destroy_images(image, map, "Mauvais chargement des images.\n");
 	image->ground = mlx_xpm_file_to_image(image->mlx, "sprites/ground.xpm",
 			&width, &height);
 	if (!image->ground)
-		destroy_images(image, map, "Mauvais chargement des images.\n", 2);
+		destroy_images(image, map, "Mauvais chargement des images.\n");
 	image->player = mlx_xpm_file_to_image(image->mlx, "sprites/boy.xpm",
 			&width, &height);
 	if (!image->player)
-		destroy_images(image, map, "Mauvais chargement des images.\n", 3);
+		destroy_images(image, map, "Mauvais chargement des images.\n");
 	image->wall_down = mlx_xpm_file_to_image(image->mlx,
 			"sprites/wall_down.xpm", &width, &height);
 	if (!image->wall_down)
-		destroy_images(image, map, "Mauvais chargement des images.\n", 4);
+		destroy_images(image, map, "Mauvais chargement des images.\n");
 	image->wall_up = mlx_xpm_file_to_image(image->mlx, "sprites/wall_up.xpm",
 			&width, &height);
 	if (!image->wall_up)
-		destroy_images(image, map, "Mauvais chargement des images.\n", 5);
+		destroy_images(image, map, "Mauvais chargement des images.\n");
 }
 
 void	load_images(t_image *image, t_map *map)

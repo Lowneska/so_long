@@ -6,7 +6,7 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 16:24:32 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/09 18:14:51 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/09 20:51:37 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-# include "../libft/includes/libft.h"
-# include "../libft/includes/get_next_line.h"
+# include "../libft/libft.h"
+# include "../libft/gnl/get_next_line.h"
 # include "../mlx_linux/mlx.h"
 # include "/usr/include/X11/X.h"
 
@@ -104,4 +104,8 @@ int		borders_check(t_map *map, int fd);
 int		cross(t_map *map);
 int		check_path_map(char **tab, t_map *map);
 int		check_path(char **tab, int i, int j);
+int		middle_line_check(char *line, t_map *map);
+void	init_map(t_map *map);
+void	free_map_p2(char **tab, int j);
+
 #endif

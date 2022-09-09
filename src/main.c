@@ -6,12 +6,57 @@
 /*   By: skhali <skhali@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 19:42:26 by skhali            #+#    #+#             */
-/*   Updated: 2022/09/09 18:47:28 by skhali           ###   ########.fr       */
+/*   Updated: 2022/09/09 20:35:43 by skhali           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
-#include <stdio.h>
+
+char	**create_map(char *str, t_map *map)
+{
+	char	**tab;
+	int		fd;
+	char	*line;
+	int		i;
+
+	i = 1;
+	tab = create_map_p2(&fd, str, map, &line);
+	tab[0] = ft_strdup(line);
+	free(line);
+	line = get_next_line(fd);
+	while (line)
+	{
+		tab[i] = ft_strdup(line);
+		free(line);
+		if (!tab[i])
+		{
+			free_map_p2(tab, i);
+			simple_exit_error_handler("Malloc error.\n", map);
+		}
+		line = get_next_line(fd);
+		i++;
+	}
+	return (tab);
+}
+
+int	check_path_map(char **tab, t_map *map)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < (map->v_len))
+	{
+		j = -1;
+		while (++j < (map->h_len))
+		{
+			if ((tab[j][i] == 'I') || (tab[j][i] == 'E'))
+				return (0);
+		}
+	}
+	return (1);
+}
+
 void	print(char *str, int i)
 {
 	ft_putstr_fd(str, 2);
@@ -21,7 +66,7 @@ void	print(char *str, int i)
 
 int	cross(t_map *map)
 {
-	destroy_images(map->image, map, "", 13);
+	destroy_images(map->image, map, "");
 	exit(0);
 	return (0);
 }
@@ -51,6 +96,6 @@ int	main(int argc, char **argv)
 	mlx_hook(map->image->mlx_win, 33, 0, cross, map);
 	mlx_hook(map->image->mlx_win, KeyPress, KeyPressMask, player_moves, map);
 	mlx_loop(map->image->mlx);
-	destroy_images(map->image, map, "", 13);
+	destroy_images(map->image, map, "");
 	return (free_map(map, map->tab), free(map->image), free(map), 0);
 }
